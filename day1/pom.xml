@@ -20,6 +20,8 @@
         <module>jaxrs.server.app.jersey.sample</module>
 		<module>myjaxrs.server.app</module>
 		<module>myjaxrs.client.app</module>
+        <module>workshop.jaxrs.server.app</module>
+        <module>workshop.jaxrs.client.app</module>
     </modules>
 
 </project>
