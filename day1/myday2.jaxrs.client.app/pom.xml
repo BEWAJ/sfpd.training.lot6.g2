@@ -8,7 +8,7 @@
         <artifactId>day1</artifactId>
         <version>1.0.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>workshop.jaxrs.client.app</artifactId>
+	<artifactId>myday2.jaxrs.client.app</artifactId>
 	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

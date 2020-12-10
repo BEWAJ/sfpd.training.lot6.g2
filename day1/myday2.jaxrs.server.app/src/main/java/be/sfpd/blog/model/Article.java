@@ -26,6 +26,14 @@ public class Article {
         this.body = body;
     }
 
+	public Article(Long id, String body, List<Comment> comments) {
+		this.id = id;
+		this.createdDate =  LocalDate.now();
+		this.updatedAt =  LocalDate.now();
+		this.body = body;
+		this.comments = comments;
+	}
+
     public Long getId() {
         return id;
     }

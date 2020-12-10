@@ -9,7 +9,7 @@
         <artifactId>day1</artifactId>
         <version>1.0.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>workshop.jaxrs.server.app</artifactId>
+	<artifactId>myday2.jaxrs.server.app</artifactId>
     <packaging>war</packaging>
 
     <properties>

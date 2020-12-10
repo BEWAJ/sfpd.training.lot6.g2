@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -22,18 +23,12 @@ public class CommentResource {
 
 	private final CommentService service = new CommentService();
 
-/*
-	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Comment createComment(Comment comment) {
-		Comment obj = service.addComment(comment);
-		if (Objects.nonNull(obj)) {
-			return obj;
-		}
-		return null;
+	@GET
+	@Path("/{commentId}")
+	public Comment getCommentById(@PathParam("articleId") Long id, @PathParam("commentId") Long commentId) {
+		return service.getCommentById(id, commentId);
 	}
 
- */
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -48,9 +43,11 @@ public class CommentResource {
 	}
 
 	@PUT
+	@Path("/{commentId}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Comment updateComment(@PathParam("articleId") Long id, Comment comment) {
+	public Comment updateComment(@PathParam("articleId") Long id, @PathParam("commentId") Long commentId, Comment comment) {
 		System.out.println("Will Update comment " + id);
+		comment.setId(commentId);
 		Comment updatedComment = service.updateComment(id, comment);
 		if (Objects.nonNull(updatedComment)) {
 			System.out.println("Update OK for Id " + updatedComment.getId());

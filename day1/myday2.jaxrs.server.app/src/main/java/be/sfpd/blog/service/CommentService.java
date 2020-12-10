@@ -4,14 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
-
-import javax.ws.rs.Consumes;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -21,22 +14,26 @@ import be.sfpd.blog.repository.MockDatabase;
 
 public class CommentService {
 
+	private final Map<String, Article> articles = MockDatabase.getArticles();
 	private final Map<String, Comment> comments = MockDatabase.getComments();
-
-	private ArticleService articleService = new ArticleService();
 
 	public CommentService() {
 		comments.put("1", new Comment(1L,"User", "Test", LocalDate.now()));
+		articles.put("1", new Article(1L, "Hello world", new ArrayList<Comment>(comments.values())));
+		articles.put("2", new Article(2L, "Hello Jersey"));
 	}
 
 	public List<Comment> getComments() {return new ArrayList<>(comments.values());}
 
 
 	public Article addComment(long articleId, Comment comment) {
-		Article article = articleService.getArticleById(articleId);
-		if (StringUtils.isNotEmpty(comment.getBody())) {
-			article.getComments().add(comment);
-			return article;
+		Article article = articles.get(String.valueOf(articleId));
+		if (article != null) {
+			if (StringUtils.isNotEmpty(comment.getBody())) {
+				comment.setId((long) article.getComments().size() + 1);
+				article.getComments().add(comment);
+				return article;
+			}
 		}
 		return article;
 	}
@@ -50,7 +47,7 @@ public class CommentService {
 	}
 
 	private Comment getComment(long articleId, Long commentId) {
-		Article article = articleService.getArticleById(articleId);
+		Article article = articles.get(String.valueOf(articleId));
 		List<Comment> comments = article.getComments().stream()
 				.filter(c -> c.getId() == commentId)
 				.collect(Collectors.toList());
@@ -68,9 +65,12 @@ public class CommentService {
 
 	public void removeComment(Long articleId, Long commentId) {
 		Comment commentToDelete = getComment(articleId, commentId);
-		Article article = articleService.getArticleById(articleId);
+		Article article = articles.get(String.valueOf(articleId));
 		article.getComments().remove(commentToDelete);
 	}
 
 
+	public Comment getCommentById(Long id, Long commentId) {
+		return getComment(id, commentId);
+	}
 }
