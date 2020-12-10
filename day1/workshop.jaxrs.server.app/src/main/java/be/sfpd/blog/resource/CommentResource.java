@@ -3,6 +3,7 @@ package be.sfpd.blog.resource;
 import java.util.Objects;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -44,6 +45,24 @@ public class CommentResource {
 		}
 		System.out.println("Update KO for Id " + id);
 		return null;
+	}
+
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Comment updateComment(@PathParam("articleId") Long id, Comment comment) {
+		System.out.println("Will Update comment " + id);
+		Comment updatedComment = service.updateComment(id, comment);
+		if (Objects.nonNull(updatedComment)) {
+			System.out.println("Update OK for Id " + updatedComment.getId());
+			return updatedComment;
+		}
+		System.out.println("Update KO for Id " + id);
+		return null;
+	}
+
+	@DELETE
+	public void deleteComment(@PathParam("articleId") Long id, Comment comment) {
+		service.removeComment(id, comment.getId());
 	}
 
 }

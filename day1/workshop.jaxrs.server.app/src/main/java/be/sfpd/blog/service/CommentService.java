@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.PUT;
@@ -40,18 +41,36 @@ public class CommentService {
 		return article;
 	}
 
-	public Comment updateComment(Comment comment) {
-		if (comments.containsKey(comment.getId().toString())) {
-			System.out.println("Not found comment " + comment.getId());
-			return null;
-		}
-		System.out.println("Found article " + comment.getId().toString());
 
-		Comment commentToUpdate = comments.get(comment.getId().toString());
+	public Comment updateComment(long articleId, Comment comment) {
+		Comment commentToUpdate = getComment(articleId, comment.getId());
 		commentToUpdate.setBody(comment.getBody());
 		commentToUpdate.setUserId(comment.getUserId());
-		Comment replaced = comments.replace(commentToUpdate.getId().toString(), commentToUpdate);
-		return replaced;
+		return commentToUpdate;
 	}
+
+	private Comment getComment(long articleId, Long commentId) {
+		Article article = articleService.getArticleById(articleId);
+		List<Comment> comments = article.getComments().stream()
+				.filter(c -> c.getId() == commentId)
+				.collect(Collectors.toList());
+		if (comments.isEmpty()) {
+			System.out.println("Not found comment " + commentId);
+			return null;
+		}
+		if( comments.size() > 1 ) {
+			System.out.println("More then one comment with id " + commentId);
+			return null;
+		}
+		System.out.println("Found article " + commentId.toString());
+		return comments.get(0);
+	}
+
+	public void removeComment(Long articleId, Long commentId) {
+		Comment commentToDelete = getComment(articleId, commentId);
+		Article article = articleService.getArticleById(articleId);
+		article.getComments().remove(commentToDelete);
+	}
+
 
 }
