@@ -1,25 +1,28 @@
 package be.sfpd.blog.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @XmlRootElement
 public class Article {
 
     private Long id;
 
-    private Date createdDate;
-    private Date updatedAt;
+    private LocalDate createdDate;
+    private LocalDate updatedAt;
 
     private String body;
+	private List<Comment> comments = new ArrayList<>();
 
-    public Article() {
-    }
 
     public Article(Long id, String body) {
         this.id = id;
-        this.createdDate = new Date();;
-        this.updatedAt = new Date();;
+        this.createdDate =  LocalDate.now();
+        this.updatedAt =  LocalDate.now();
         this.body = body;
     }
 
@@ -31,19 +34,19 @@ public class Article {
         this.id = id;
     }
 
-    public Date getCreatedDate() {
+    public LocalDate getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Date createdDate) {
+    public void setCreatedDate(LocalDate createdDate) {
         this.createdDate = createdDate;
     }
 
-    public Date getUpdatedAt() {
+    public LocalDate getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(LocalDate updatedAt) {
         this.updatedAt = updatedAt;
     }
 
@@ -54,4 +57,18 @@ public class Article {
     public void setBody(String body) {
         this.body = body;
     }
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
+
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+
+
+	public Article() {
+	}
+
 }

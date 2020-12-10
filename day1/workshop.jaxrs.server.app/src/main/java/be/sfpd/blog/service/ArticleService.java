@@ -1,10 +1,13 @@
 package be.sfpd.blog.service;
 
 import be.sfpd.blog.model.Article;
+import be.sfpd.blog.model.Comment;
 import be.sfpd.blog.repository.MockDatabase;
 import org.apache.commons.lang3.StringUtils;
 
+import java.time.LocalDate;
 import java.util.*;
+
 
 public class ArticleService {
 
@@ -26,7 +29,7 @@ public class ArticleService {
     public Article addArticle(Article article) {
         if (StringUtils.isNotEmpty(article.getBody())) {
             article.setId((long) (articles.size() + 1));
-            article.setCreatedDate(new Date());
+            article.setCreatedDate(LocalDate.now());
             articles.put(article.getId().toString(), article);
             return article;
         }
@@ -42,7 +45,7 @@ public class ArticleService {
 
         Article articleToUpdate = articles.get(article.getId().toString());
         articleToUpdate.setBody(article.getBody());
-        articleToUpdate.setUpdatedAt(new Date());
+        articleToUpdate.setUpdatedAt(LocalDate.now());
         Article replaced = articles.replace(articleToUpdate.getId().toString(), articleToUpdate);
         return replaced;
     }
@@ -50,4 +53,7 @@ public class ArticleService {
     public void removeArticle(Long id) {
         articles.remove(id.toString());
     }
+
+
+
 }
