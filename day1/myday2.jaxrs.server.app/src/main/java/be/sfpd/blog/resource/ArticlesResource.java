@@ -1,11 +1,14 @@
 package be.sfpd.blog.resource;
 
+import be.sfpd.blog.exception.MyCustomException;
 import be.sfpd.blog.model.Article;
 import be.sfpd.blog.resource.bean.ArticleFilterBean;
 import be.sfpd.blog.service.ArticleService;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -17,7 +20,7 @@ public class ArticlesResource {
     private final ArticleService service = new ArticleService();
 
     @GET
-    public List<Article> getAllArticle(@BeanParam ArticleFilterBean articleFilterBean) {
+    public Response getAllArticle(@BeanParam ArticleFilterBean articleFilterBean) {
         List<Article> articlesByYear = new ArrayList<>();
 
         if (articleFilterBean.getYear() > 0) {
@@ -26,9 +29,13 @@ public class ArticlesResource {
             articlesByYear.addAll(service.getArticles());
         }
         if (articleFilterBean.getOffset() >= 0 && articleFilterBean.getLimit() > 0) {
-            return service.getPaginatedArticles(articleFilterBean.getOffset(), articleFilterBean.getLimit(), articlesByYear);
+			List<Article> paginatedArticles = service.getPaginatedArticles(articleFilterBean.getOffset(), articleFilterBean.getLimit(), articlesByYear);
+			articlesByYear.clear();
+			articlesByYear.addAll(paginatedArticles);
         }
-        return articlesByYear;
+        return Response
+				.accepted(articlesByYear)
+				.build();
     }
 
     @GET
@@ -50,16 +57,16 @@ public class ArticlesResource {
     @PUT
     @Path("/{articleId}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Article updateArticle(@PathParam("articleId") Long id, Article article) {
+    public Article updateArticle(@PathParam("articleId") Long id, Article article) throws MyCustomException {
         System.out.println("Will Update article " + id);
         article.setId(id);
         Article updatedArticle = service.updateArticle(article);
         if (Objects.nonNull(updatedArticle)) {
             System.out.println("Update OK for Id " + updatedArticle.getId());
             return updatedArticle;
-        }
-        System.out.println("Update KO for Id " + id);
-        return null;
+        } else {
+        	throw new MyCustomException();
+		}
     }
 
     @DELETE

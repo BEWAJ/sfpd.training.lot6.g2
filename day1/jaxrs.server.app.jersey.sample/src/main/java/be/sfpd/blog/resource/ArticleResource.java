@@ -1,7 +1,7 @@
 package be.sfpd.blog.resource;
 
 import be.sfpd.blog.model.Article;
-import be.sfpd.blog.service.ArticleService;
+import be.sfpd.blog.service.ArticleServiceSample;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -13,7 +13,7 @@ import java.util.List;
 @Path("articles")
 public class ArticleResource {
 
-    ArticleService service = new ArticleService();
+    ArticleServiceSample service = new ArticleServiceSample();
 
     @GET
     @Produces(MediaType.APPLICATION_XML)

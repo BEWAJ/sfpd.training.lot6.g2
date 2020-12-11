@@ -19,7 +19,7 @@ public class Test_1_WebServiceStatus {
          * When I perform the GET request
          * Then Assert That the status code is OK
          */
-        URI uri = new URI("http://localhost:8080/workshop.jaxrs.server.app/status");
+        URI uri = new URI("http://localhost:8080/myday2.jaxrs.server.app/status");
         given()
             .accept(ContentType.TEXT)
         .when()

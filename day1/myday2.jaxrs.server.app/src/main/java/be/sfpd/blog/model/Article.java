@@ -1,82 +1,76 @@
 package be.sfpd.blog.model;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import be.sfpd.blog.adapter.LocalDateTimeAdapter;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 @XmlRootElement
 public class Article {
 
-    private Long id;
+	private Long id;
 
-    private LocalDate createdDate;
-    private LocalDate updatedAt;
+	private LocalDateTime createdDate;
+	private LocalDateTime updatedAt;
 
-    private String body;
-	private List<Comment> comments = new ArrayList<>();
+	private String body;
 
-
-    public Article(Long id, String body) {
-        this.id = id;
-        this.createdDate =  LocalDate.now();
-        this.updatedAt =  LocalDate.now();
-        this.body = body;
-    }
-
-	public Article(Long id, String body, List<Comment> comments) {
-		this.id = id;
-		this.createdDate =  LocalDate.now();
-		this.updatedAt =  LocalDate.now();
-		this.body = body;
-		this.comments = comments;
-	}
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public LocalDate getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(LocalDate createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public LocalDate getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDate updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
-    }
-
-	public void setComments(List<Comment> comments) {
-		this.comments = comments;
-	}
-
-	public List<Comment> getComments() {
-		return comments;
-	}
-
-
+	private Map<Long, Comment> comments = new HashMap<>();
 
 	public Article() {
 	}
 
+	public Article(Long id, String body) {
+		this.id = id;
+		this.createdDate = LocalDateTime.now();;
+		this.updatedAt = LocalDateTime.now();;
+		this.body = body;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	@XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
+	public LocalDateTime getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(LocalDateTime createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	@XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
+	public LocalDateTime getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(LocalDateTime updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
+	public String getBody() {
+		return body;
+	}
+
+	public void setBody(String body) {
+		this.body = body;
+	}
+
+	@XmlTransient
+	public Map<Long, Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(Map<Long, Comment> comments) {
+		this.comments = comments;
+	}
 }

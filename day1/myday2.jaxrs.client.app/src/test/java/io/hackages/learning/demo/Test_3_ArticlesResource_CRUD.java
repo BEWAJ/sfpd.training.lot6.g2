@@ -14,12 +14,7 @@ import java.net.URISyntaxException;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
-public class Test_3_ArticlesResource_CRUD {
-
-    @BeforeTest
-    public void setUp () {
-        RestAssured.baseURI = "http://localhost:8080/workshop.jaxrs.server.app";
-    }
+public class Test_3_ArticlesResource_CRUD extends AbstractTestResource {
 
     @Test
     public void test_articles_post_resource_expect_status_code_ok() throws URISyntaxException {
@@ -29,7 +24,7 @@ public class Test_3_ArticlesResource_CRUD {
                 .and()
                 .request()
                 .body("{\n" +
-                        "  \"body\": \"New Article in DB\"\n" +
+                        "  \"body\": \"New Article 4 in DB\"\n" +
                         "}")
                 .when()
                 .post(uri)
@@ -44,7 +39,7 @@ public class Test_3_ArticlesResource_CRUD {
                 .and()
                 .request()
                 .body("{\n" +
-                        "  \"body\": \"New Article in DB\"\n" +
+                        "  \"body\": \"New Article 4 in DB\"\n" +
                         "}")
                 .when()
                 .post(uri);
@@ -56,7 +51,7 @@ public class Test_3_ArticlesResource_CRUD {
                 .assertThat()
                 .statusCode(HttpStatus.SC_OK)
                 .and()
-                .body("body", is("New Article in DB"))
+                .body("body", is("New Article 4 in DB"))
         ;
     }
 
@@ -70,7 +65,7 @@ public class Test_3_ArticlesResource_CRUD {
                 .then().assertThat()
                 .statusCode(HttpStatus.SC_OK)
                 .and()
-                .body("body", is("Hello Jersey"));
+                .body("body", is("New Article 2 in DB"));
 
         given()
                 .accept(ContentType.JSON)
@@ -84,10 +79,7 @@ public class Test_3_ArticlesResource_CRUD {
                 .when()
                 .get("/articles/2")
                 .then().assertThat()
-                .statusCode(HttpStatus.SC_OK)
-                .and()
-                .body("body", is("Hello Jersey"));
-                // FIXME - Should be .statusCode(HttpStatus.SC_NO_CONTENT);
+                .statusCode(HttpStatus.SC_NO_CONTENT);
 
     }
 
@@ -101,7 +93,7 @@ public class Test_3_ArticlesResource_CRUD {
                 .then().assertThat()
                 .statusCode(HttpStatus.SC_OK)
                 .and()
-                .body("body", is("Hello world"));
+                .body("body", is("New Article 1 in DB"));
 
         URI uri = new URI("/articles/1");
         Response response = given()
@@ -111,7 +103,7 @@ public class Test_3_ArticlesResource_CRUD {
                 .and()
                 .request()
                 .body("{\n" +
-                        "  \"body\": \"Updated content for Article in DB\"\n" +
+                        "  \"body\": \"Updated content for Article 1 in DB\"\n" +
                         "}")
                 .when()
                 .put(uri);
@@ -119,7 +111,7 @@ public class Test_3_ArticlesResource_CRUD {
         response
                 .then()
                 .assertThat()
-                .statusCode(HttpStatus.SC_NO_CONTENT)
+                .statusCode(HttpStatus.SC_OK)
         ;
 
         given()
@@ -127,11 +119,32 @@ public class Test_3_ArticlesResource_CRUD {
                 .when()
                 .get("/articles/1")
                 .then().assertThat()
-                .statusCode(HttpStatus.SC_OK);
-        /* FIXME - SHOULD BE WORKING
+                .statusCode(HttpStatus.SC_OK)
                 .and()
-                .body("body", is("Updated content for Article in DB"));
-        */
+                .body("body", is("Updated content for Article 1 in DB"));
+
     }
+
+	@Test
+	public void test_articles_put_throw_exception() throws URISyntaxException {
+
+		URI uri = new URI("/articles/5");
+		Response response = given()
+				.accept(ContentType.JSON)
+				.and()
+				.contentType(ContentType.JSON)
+				.and()
+				.request()
+				.body("{\n" +
+						"  \"body\": \"Updated content for Article 5 in DB\"\n" +
+						"}")
+				.when()
+				.put(uri);
+		response.body().prettyPrint();
+		response
+				.then()
+				.assertThat()
+				.statusCode(HttpStatus.SC_NOT_MODIFIED);
+	}
 
 }

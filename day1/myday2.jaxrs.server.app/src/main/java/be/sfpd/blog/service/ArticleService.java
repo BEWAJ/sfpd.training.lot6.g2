@@ -57,7 +57,7 @@ public class ArticleService {
     }
 
     public Article updateArticle(Article article) {
-        if (articles.containsKey(article.getId().toString())) {
+        if (!articles.containsKey(article.getId().toString())) {
             System.out.println("Not found article " + article.getId());
             return null;
         }

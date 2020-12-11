@@ -19,7 +19,7 @@ public class Test_4_ProfilesResource {
 
     @BeforeTest
     public void setUp () {
-        RestAssured.baseURI = "http://localhost:8080/workshop.jaxrs.server.app";
+        RestAssured.baseURI = "http://localhost:8080/myday2.jaxrs.server.app";
     }
 
     @Test

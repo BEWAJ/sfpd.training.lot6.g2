@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ArticleService {
+public class ArticleServiceSample {
 
     private Map<Long, Article> articles = MockDatabase.getArticles();
 
-    public ArticleService() {
+    public ArticleServiceSample() {
         Article article1 = new Article(1L, new Date(), "Hello world");
         Article article2 = new Article(2L, new Date(), "Hello Jersey");
         articles.put(1L, article1);
@@ -20,7 +20,7 @@ public class ArticleService {
     }
 
     public List<Article> getArticles() {
-        return articles.values().stream().collect(Collectors.toList());
+    	return articles.values().stream().collect(Collectors.toList());
     }
 
     public Article getArticleById(Long id) {
