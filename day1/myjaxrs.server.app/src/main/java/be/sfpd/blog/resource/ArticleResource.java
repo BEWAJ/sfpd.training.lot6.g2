@@ -13,6 +13,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -39,7 +41,7 @@ public class ArticleResource {
 	@Consumes({MediaType.APPLICATION_JSON})
 	@Produces(MediaType.TEXT_PLAIN)
 	public String add(Article article){
-    	article.setCreatedDate(new Date());
+    	article.setCreatedDate(LocalDateTime.now());
     	service.addArticle(article);
     	return "article added";
     }

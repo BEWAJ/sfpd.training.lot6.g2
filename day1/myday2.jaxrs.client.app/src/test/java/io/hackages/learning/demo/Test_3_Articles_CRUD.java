@@ -1,11 +1,8 @@
 package io.hackages.learning.demo;
 
-import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.apache.http.HttpStatus;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.net.URI;
@@ -14,7 +11,7 @@ import java.net.URISyntaxException;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
-public class Test_3_ArticlesResource_CRUD extends AbstractTestResource {
+public class Test_3_Articles_CRUD extends SetDataForEndToEndTest {
 
     @Test
     public void test_articles_post_resource_expect_status_code_ok() throws URISyntaxException {

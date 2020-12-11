@@ -8,20 +8,13 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import org.apache.http.HttpStatus;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
-public class MyTest_ArticlesResource {
-
-    @BeforeTest
-    public void setUp () {
-        RestAssured.baseURI = "http://localhost:8080/workshop.jaxrs.server.app";
-    }
+public class MyTest_Articles extends SetDataForEndToEndTest {
 
 	@Test(dataProvider = "instanceParams")
     public void test_articles_filtering(Integer offset, Integer size, Integer year, Integer result) throws URISyntaxException {

@@ -11,7 +11,7 @@ import org.testng.annotations.BeforeTest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 
-public abstract class AbstractTestResource {
+public abstract class SetDataForEndToEndTest {
 
 	@BeforeTest
 	public void setUp () {
