@@ -21,6 +21,8 @@ public class Article {
 
 	private Map<Long, Comment> comments = new HashMap<>();
 
+	private Attachment attachment;
+
 	public Article() {
 	}
 
@@ -72,5 +74,13 @@ public class Article {
 
 	public void setComments(Map<Long, Comment> comments) {
 		this.comments = comments;
+	}
+
+	public Attachment getAttachment() {
+		return attachment;
+	}
+
+	public void setAttachment(Attachment attachment) {
+		this.attachment = attachment;
 	}
 }

@@ -5,6 +5,7 @@ import be.sfpd.blog.model.Article;
 import be.sfpd.blog.resource.bean.ArticleFilterBean;
 import be.sfpd.blog.service.ArticleService;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -20,6 +21,7 @@ public class ArticlesResource {
     private final ArticleService service = new ArticleService();
 
     @GET
+	@RolesAllowed("test")
     public Response getAllArticle(@BeanParam ArticleFilterBean articleFilterBean) {
         List<Article> articlesByYear = new ArrayList<>();
 
@@ -40,6 +42,7 @@ public class ArticlesResource {
 
     @GET
     @Path("/{id}")
+	@RolesAllowed("test")
     public Article getArticleById(@PathParam("id") Long articleId) {
         return service.getArticleById(articleId);
     }

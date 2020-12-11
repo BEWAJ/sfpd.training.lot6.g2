@@ -19,6 +19,9 @@ public class Test_2_Articles extends SetDataForEndToEndTest {
     public void test_articles_collection_resource_expect_status_code_ok() throws URISyntaxException {
         URI uri = new URI("/articles");
         Response response = given()
+				.auth()
+				.preemptive()
+				.basic("Test", "password")
                 .accept(ContentType.JSON)
                 .when()
                 .get(uri);
@@ -42,6 +45,9 @@ public class Test_2_Articles extends SetDataForEndToEndTest {
     public void test_articles_instance_resource_expect_status_code_ok(long id, String bodyToVerify) throws URISyntaxException {
         URI uri = new URI("/articles/" + id);
         Response response = given()
+				.auth()
+				.preemptive()
+				.basic("Test", "password")
             .accept(ContentType.JSON)
             .when()
                 .get(uri);

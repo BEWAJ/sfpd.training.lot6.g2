@@ -21,6 +21,7 @@ public abstract class SetDataForEndToEndTest {
 	@BeforeMethod
 	public void resetDB() {
 		given()
+				.header("Authorization", "Basic VGVzdDpwYXNzd29yZA==")
 				.accept(ContentType.JSON)
 				.when()
 				.get("/management/reset");
@@ -43,6 +44,7 @@ public abstract class SetDataForEndToEndTest {
 
 	private void insertArticle(String article){
 		given().contentType(ContentType.JSON)
+				.header("Authorization", "Basic VGVzdDpwYXNzd29yZA==")
 				.body(article)
 				.when()
 				.post("/articles");
