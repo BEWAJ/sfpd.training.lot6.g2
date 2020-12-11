@@ -88,4 +88,35 @@ public class MyTest_CommentsResource {
                 .body("body", is("Updated comment in DB"));
         */
 	}
+
+	@Test
+	public void test_comment_delete() throws URISyntaxException {
+
+		given()
+				.accept(ContentType.JSON)
+				.when()
+				.get("/articles/1/comments/1")
+				.then().assertThat()
+				.statusCode(HttpStatus.SC_OK)
+				.and()
+				.body("body", is("Updated comment in DB"));
+
+		given()
+				.accept(ContentType.JSON)
+				.when()
+				.delete("/articles/1/comments/1")
+				.then().assertThat()
+				.statusCode(HttpStatus.SC_NO_CONTENT);
+
+		given()
+				.accept(ContentType.JSON)
+				.when()
+				.get("/articles/2")
+				.then().assertThat()
+				.statusCode(HttpStatus.SC_OK)
+				.and()
+				.body("body", is("Hello Jersey"));
+		// FIXME - Should be .statusCode(HttpStatus.SC_NO_CONTENT);
+
+	}
 }
