@@ -1,60 +1,56 @@
 package be.sfpd.blog.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement
 public class Comment {
 
-	private Long id;
-	private String userId;
-	private String body;
-	private LocalDate commentDate;
+    private Long id;
 
-	public Comment() {
-	}
+    private String message;
 
-	public Comment(Long id, String userId, String body, LocalDate commentDate) {
-		this.id = id;
-		this.userId = userId;
-		this.body = body;
-		this.commentDate = commentDate;
-	}
+    private LocalDateTime createdDate;
 
-	public Long getId() {
-		return id;
-	}
+    private String author;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Comment() {
+    }
 
-	public String getUserId() {
-		return userId;
-	}
+    public Comment(Long id, String message, LocalDateTime createdDate, String author) {
+        this.id = id;
+        this.message = message;
+        this.createdDate = createdDate;
+        this.author = author;
+    }
 
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getBody() {
-		return body;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setBody(String body) {
-		this.body = body;
-	}
+    public String getMessage() {
+        return message;
+    }
 
-	public LocalDate getCommentDate() {
-		return commentDate;
-	}
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
-	public void setCommentDate(LocalDate commentDate) {
-		this.commentDate = commentDate;
-	}
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
 
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
 
+    public String getAuthor() {
+        return author;
+    }
 
-
+    public void setAuthor(String author) {
+        this.author = author;
+    }
 }

@@ -1,16 +1,14 @@
 package be.sfpd.blog.resource;
 
 import be.sfpd.blog.model.Article;
-import be.sfpd.blog.model.Comment;
+import be.sfpd.blog.resource.bean.ArticleFilterBean;
 import be.sfpd.blog.service.ArticleService;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Path("articles")
 @Produces(MediaType.APPLICATION_JSON)
@@ -19,21 +17,18 @@ public class ArticlesResource {
     private final ArticleService service = new ArticleService();
 
     @GET
-    public List<Article> getAllArticle(@QueryParam("offset") Integer offset, @QueryParam("limit") Integer limit, @QueryParam("year") Integer year) {
+    public List<Article> getAllArticle(@BeanParam ArticleFilterBean articleFilterBean) {
+        List<Article> articlesByYear = new ArrayList<>();
 
-    	System.out.println("yay this is query param limit " + limit);
-    	System.out.println("yay this is query param offset " + offset);
-
-		List<Article> articles = service.getArticles()
-				.stream()
-				.skip(offset == null ? 0 : offset)
-				.limit(limit == null ? 0: limit)
-				.filter(a -> a.getCreatedDate().getYear() == year)
-				.collect(Collectors.toList());
-
-		return articles;
-
-
+        if (articleFilterBean.getYear() > 0) {
+            articlesByYear.addAll(service.getArticlesByYear(articleFilterBean.getYear()));
+        } else {
+            articlesByYear.addAll(service.getArticles());
+        }
+        if (articleFilterBean.getOffset() >= 0 && articleFilterBean.getLimit() > 0) {
+            return service.getPaginatedArticles(articleFilterBean.getOffset(), articleFilterBean.getLimit(), articlesByYear);
+        }
+        return articlesByYear;
     }
 
     @GET
@@ -42,8 +37,7 @@ public class ArticlesResource {
         return service.getArticleById(articleId);
     }
 
-
-	@POST
+    @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Article createArticle(Article article) {
         Article obj = service.addArticle(article);

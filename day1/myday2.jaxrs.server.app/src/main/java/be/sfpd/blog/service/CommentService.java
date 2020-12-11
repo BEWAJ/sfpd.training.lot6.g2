@@ -1,76 +1,52 @@
 package be.sfpd.blog.service;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import org.apache.commons.lang3.StringUtils;
-
 import be.sfpd.blog.model.Article;
 import be.sfpd.blog.model.Comment;
 import be.sfpd.blog.repository.MockDatabase;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 public class CommentService {
 
-	private final Map<String, Article> articles = MockDatabase.getArticles();
-	private final Map<String, Comment> comments = MockDatabase.getComments();
+    private Map<String, Article> articles = MockDatabase.getArticles();
 
-	public CommentService() {
-		comments.put("1", new Comment(1L,"User", "Test", LocalDate.now()));
-		articles.put("1", new Article(1L, "Hello world", new ArrayList<Comment>(comments.values())));
-		articles.put("2", new Article(2L, "Hello Jersey"));
-	}
+    public List<Comment> getAllComments(Long articleId) {
+        Article selectedArticle = articles.get(articleId.toString());
+        Map<Long, Comment> comments = selectedArticle.getComments();
+        return new ArrayList<>(comments.values());
+    }
 
-	public List<Comment> getComments() {return new ArrayList<>(comments.values());}
+    public Comment getCommentById(Long articleId, Long commentId) {
+        Article selectedArticle = articles.get(articleId.toString());
+        Map<Long, Comment> comments = selectedArticle.getComments();
 
+        return comments.get(commentId);
+    }
 
-	public Article addComment(long articleId, Comment comment) {
-		Article article = articles.get(String.valueOf(articleId));
-		if (article != null) {
-			if (StringUtils.isNotEmpty(comment.getBody())) {
-				comment.setId((long) article.getComments().size() + 1);
-				article.getComments().add(comment);
-				return article;
-			}
-		}
-		return article;
-	}
+    public Comment addComment(Long articleId, Comment comment) {
+        Article selectedArticle = articles.get(articleId.toString());
+        Map<Long, Comment> comments = selectedArticle.getComments();
 
+        comment.setId((long) (comments.size() + 1));
+        comments.put(comment.getId(), comment);
+        return comment;
+    }
 
-	public Comment updateComment(long articleId, Comment comment) {
-		Comment commentToUpdate = getComment(articleId, comment.getId());
-		commentToUpdate.setBody(comment.getBody());
-		commentToUpdate.setUserId(comment.getUserId());
-		return commentToUpdate;
-	}
+    public Comment updateComment(Long articleId, Comment comment) {
+        Article selectedArticle = articles.get(articleId.toString());
+        Map<Long, Comment> comments = selectedArticle.getComments();
 
-	private Comment getComment(long articleId, Long commentId) {
-		Article article = articles.get(String.valueOf(articleId));
-		List<Comment> comments = article.getComments().stream()
-				.filter(c -> c.getId() == commentId)
-				.collect(Collectors.toList());
-		if (comments.isEmpty()) {
-			System.out.println("Not found comment " + commentId);
-			return null;
-		}
-		if( comments.size() > 1 ) {
-			System.out.println("More then one comment with id " + commentId);
-			return null;
-		}
-		System.out.println("Found article " + commentId.toString());
-		return comments.get(0);
-	}
+        Comment commentToUpdate = comments.get(comment.getId());
+        commentToUpdate.setMessage(comment.getMessage());
+        comments.replace(commentToUpdate.getId(), commentToUpdate);
 
-	public void removeComment(Long articleId, Long commentId) {
-		Comment commentToDelete = getComment(articleId, commentId);
-		Article article = articles.get(String.valueOf(articleId));
-		article.getComments().remove(commentToDelete);
-	}
+        return comment;
+    }
 
-
-	public Comment getCommentById(Long id, Long commentId) {
-		return getComment(id, commentId);
-	}
+    public void removeComment(Long articleId, Long commentId) {
+        Map<Long, Comment> comments = articles.get(articleId.toString()).getComments();
+        comments.remove(commentId);
+    }
 }

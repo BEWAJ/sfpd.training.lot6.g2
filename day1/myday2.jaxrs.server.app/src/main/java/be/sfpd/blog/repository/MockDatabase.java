@@ -11,7 +11,6 @@ public class MockDatabase {
 
     public static Map<String, Article> articles = new HashMap<>();
     public static Map<String, Profile> profiles = new HashMap<>();
-	public static Map<String, Comment> comments = new HashMap<>();
 
     public static Map<String, Article> getArticles() {
         return articles;
@@ -21,6 +20,11 @@ public class MockDatabase {
         return profiles;
     }
 
-	public static Map<String, Comment> getComments() { return comments; }
+
+
+    public static void resetDB() {
+        articles.clear();
+        profiles.clear();
+    }
 
 }
